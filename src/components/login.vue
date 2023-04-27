@@ -20,6 +20,7 @@
                     placeholder="请输入用户名"
                     v-model="loginForm.username"
                     prefix-icon="el-icon-s-custom"
+                    maxlength="10"
                     style="color:red">
           </el-input>
         </el-form-item>
@@ -29,14 +30,15 @@
                     placeholder="请输入密码"
                     v-model="loginForm.password"
                     prefix-icon="el-icon-s-claim"
+                    maxlength="10"
                     show-password>
           </el-input>
         </el-form-item>
 
         <el-form-item>
           <el-button type="primary"
+                     @click="goHome"
                      style="width:100%">登录
-
           </el-button>
         </el-form-item>
 
@@ -51,12 +53,54 @@
 export default {
   name: 'login',
   data () {
+    const validUserName = (rule, value, callback) => {
+      // 用户名可输入大小写字母
+      const reg = /^[A-Za-z]+$/
+      if (!value) {
+        return callback(new Error('此项为必输项！'))
+      }
+      if (!reg.test(value)) {
+        callback(new Error('请输入大写或小写英文字母！'))
+      } else {
+        callback()
+      }
+    }
     return {
       loginForm: {
         username: '',
         password: ''
+      },
+      loginRules: {
+        username: [{ required: true, trigger: 'blur', validator: validUserName }],
+        password: [{ required: true, trigger: 'blur', validator: validUserName }]
       }
-      // loginRules: {username:[{required:true, trigger: 'blur',validator:validUserName}]}
+    }
+  },
+  methods: {
+    goHome () {
+      this.$router.push('/home')
+    },
+    // get请求
+    login () {
+      const params = {
+        username: this.loginForm.username,
+        password: this.loginForm.password
+      }
+      // get请求{params:{user:'julie'}},post请求{user:'julie'}
+      this.$axios.get('/api/login', { params: params }).then(res => {
+        console.log(res, 'login-res')
+      })
+    },
+    // post请求
+    login1 () {
+      const params = {
+        username: this.loginForm.username,
+        password: this.loginForm.password
+      }
+      // get请求{params:{user:'julie'}},post请求{user:'julie'}
+      this.$axios.post('/api/loginPost', params).then(res => {
+        console.log(res, 'login-res')
+      })
     }
   }
 }
@@ -107,7 +151,7 @@ export default {
       color: #409eff;
     }
     .el-input {
-      margin-bottom: 20px;
+      // margin-bottom: 10px;
       /deep/ .el-input__icon {
         color: #409eff;
       }

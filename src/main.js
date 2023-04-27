@@ -7,7 +7,7 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // 引入mock模拟接口返回
-import '@/assets/mock'
+import './mock/index.js'
 import axios from 'axios'
 Vue.prototype.$axios = axios
 
@@ -18,6 +18,7 @@ Vue.use(ElementUI)
 new Vue({
   el: '#app',
   router,
+  axios,
   components: { App },
   template: '<App/>'
 })

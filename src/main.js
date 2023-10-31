@@ -9,6 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 // 引入mock模拟接口返回
 import './mock/index.js'
 import axios from 'axios'
+
 Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
